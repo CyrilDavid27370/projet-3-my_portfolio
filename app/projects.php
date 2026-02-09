@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/projects-style.css">
     <title>Portfolio - Projets</title>
-
 </head>
+
+<?php
+$pdo = new PDO('mysql:host=mysql;dbname=my_portfolio;charset=utf8', 'user', 'pwd');
+$sql = 'SELECT title, description FROM projects';
+$request=$pdo->prepare($sql);
+$request->execute();
+$projects = $request->fetchAll(PDO::FETCH_ASSOC) ;
+?>
 
 <body>
     <header>
@@ -26,21 +33,20 @@
         <h1 class="section-title">Mes Projets</h2>
         <div class="projects-list">
 
-            
-            <?php for ($i=1; $i <= 5; $i++) { ?>
+            <?php foreach ($projects as $project) { ?>
+                
             <div class="project-card">
                 <div class="project-content">
-                    <h2><a href="show.php" class="project-title">Coder comme un pro</a></h2>
+                    <h2><a href="show.php" class="project-title"><?php echo $project['title'] ?></a></h2>
                     <p class="project-description">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur ut dolorem voluptates rerum officiis est pariatur dolor aperiam tempora quibusdam.
+                    <?php echo $project['description'] ?>
                     </p>
                 </div>
-            </div>    
+            </div> 
+
             <?php } ?>
+
         </div>
     </section>
-
-
 </body>
-
 </html>
