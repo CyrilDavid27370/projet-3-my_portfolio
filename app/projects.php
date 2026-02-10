@@ -10,7 +10,7 @@
 
 <?php
 $pdo = new PDO('mysql:host=mysql;dbname=my_portfolio;charset=utf8', 'user', 'pwd');
-$sql = 'SELECT title, description FROM projects';
+$sql = 'SELECT id, title, description FROM projects';
 $request=$pdo->prepare($sql);
 $request->execute();
 $projects = $request->fetchAll(PDO::FETCH_ASSOC) ;
@@ -37,9 +37,9 @@ $projects = $request->fetchAll(PDO::FETCH_ASSOC) ;
                 
             <div class="project-card">
                 <div class="project-content">
-                    <h2><a href="show.php" class="project-title"><?php echo $project['title'] ?></a></h2>
+                    <h2><a href="show.php?id=<?php echo $project['id'] ?>" class="project-title"><?php echo htmlspecialchars($project['title'])?></a></h2>
                     <p class="project-description">
-                    <?php echo $project['description'] ?>
+                    <?php echo htmlspecialchars($project['description']) ?>
                     </p>
                 </div>
             </div> 

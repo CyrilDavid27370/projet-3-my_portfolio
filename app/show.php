@@ -1,3 +1,16 @@
+<?php
+$id=$_GET['id'];
+
+$pdo = new PDO('mysql:host=mysql;dbname=my_portfolio;charset=utf8', 'user', 'pwd');
+$sql = "SELECT p.*, u.name as author FROM projects p
+INNER JOIN user u
+ON u.id=p.user_id
+WHERE p.id = :id";
+$request = $pdo->prepare($sql);
+$request->execute(['id'=>$id]);
+$project=$request->fetch(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -23,29 +36,22 @@
     </header>
     
     <section class="projects-section">
-
-        <h2 class="section-title">Mes Projets</h2>    
-
+        <h2 class="section-title">Mon Projet</h2>    
         <div class="project-card">
             <div class="project-content">
-                <h2 class="project-title">Coder comme un pro</h2>                     
+                <h2 class="project-title"><?php echo htmlspecialchars($project['title']) ?></h2>                     
                 <p class="project-description">
-                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore illum, at consequatur eveniet ullam voluptatum accusantium similique doloribus facere neque, animi recusandae doloremque aut delectus sint culpa sed placeat ea cum est. Nisi earum perspiciatis doloremque nemo porro quia vitae labore animi ipsa minima a explicabo illum illo cumque iure exercitationem modi ad vel ipsum vero repudiandae, culpa consequatur repellat voluptas? Velit unde deleniti esse! Distinctio officia vel nostrum facilis? Delectus dolore reiciendis reprehenderit repudiandae culpa labore corrupti sint itaque voluptatem quos blanditiis amet fugit deserunt, consequuntur laboriosam veritatis nulla nam? Dolore ut unde nulla nemo sit quisquam, fugiat perspiciatis.
-                <div class="project-links">
-                    <a href="#" class="project-link secondary">GitHub</a>                   
+                <?php echo htmlspecialchars($project ['description'])?></p>
+                    <a href="<?php echo htmlspecialchars($project['url_git'])?>" class="project-link secondary">GitHub</a>                   
                     <div class="delete"><a href="">❌</a></div>
                     <div class="update"><a href="">✏️</a></div>
                 </div>
                 <div class="infos">
-                    <div>01/02/2026</div>
-                    <div>Camile</div>
+                    <div><?php echo date('d/m/Y', strtotime($project['creation_date'])); ?></div>
+                    <div><?php echo htmlspecialchars($project['author'])?></div>
                 </div>
             </div>
         </div>    
-
-    </section>
-
-
+</section>
 </body>
-
 </html>
