@@ -84,6 +84,17 @@ h2 {
     color: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
+.add {
+    border: white solid 5px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: rgb(206, 206, 206);
+}
+
+.p-add {
+    margin-bottom: 30px;
+}
+
 
 
 @media (min-width: 769px) {

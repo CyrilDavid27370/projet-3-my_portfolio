@@ -1,0 +1,40 @@
+@import url("general-style.css");
+@import url("header-style.css");
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 20px;
+    text-align: center;
+}
+
+h2 {
+    margin: 50px;
+}
+
+.button {
+    width: 40%;
+    align-self: center;
+}
+
+@media (min-width: 769px) {
+    form {
+        width: 70%;
+    }
+}
+
+@media (min-width: 1025px) {
+    form {
+        width: 50%;
+
+    }
+}
