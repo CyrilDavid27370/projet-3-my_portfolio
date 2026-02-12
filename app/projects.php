@@ -1,3 +1,8 @@
+<?php
+$message = isset($_GET['message']) ? 'Le projet a été ajouté avec succès' : NULL;
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -23,6 +28,7 @@
     </header>
     
     <section class="projects-section">
+        <?php echo "<div style='color:green'>$message</div>" ?>
         <h1 class="section-title">Mes Projets</h2>
         <p class="p-add"><a href="add.php" class="add">➕</a></p>
         <div class="projects-list">
