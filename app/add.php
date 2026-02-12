@@ -1,7 +1,7 @@
 <?php
 
 $pdo = new PDO('mysql:dbname=my_portfolio;host=mysql;charset=UTF8', 'user', 'pwd');
-$sql = "SELECT * FROM users";
+$sql = "SELECT * FROM user";
 $request = $pdo->prepare($sql);
 $request->execute();
 $users = $request->fetchall(PDO::FETCH_ASSOC);
@@ -10,7 +10,7 @@ $message = NULL;
 $description = '';
 $title = '';
 
-//Si le formaulaire a été soumi
+//Si le formaulaire a été soumis
 if(!empty($_POST)) {
     // On récupère les saisies utilisateurs ($_POST)
     $title = trim($_POST['title']);
@@ -18,10 +18,10 @@ if(!empty($_POST)) {
     $urlGit = trim($_POST['url_git']);
     $userId = (int)$_POST['user_id'];
 
-    // On vérifie si les chmaps comportenet des erreurs
+    // On vérifie si les champs comportenet des erreurs
     $message = fieldsVerify($title, $description, $userId, $urlGit);
 
-    // Si pas d'erreur sur les chamsp on enregistre dans la BDD
+    // Si pas d'erreur sur les champs on enregistre dans la BDD
     if (!$message) {
         // 2) On les envoie dans la BDD
         $sql = "INSERT INTO projects(title, description, url_git, user_id) VALUES (:title, :description, :urlGit, :userId)";
@@ -90,7 +90,7 @@ function fieldsVerify($title, $description, $userId, $urlGit) {
     <section class="form-section">
         <h2>Ajouter un projet</h2>
 
-       <form action="" method="post">
+    <form action="" method="post">
             <label for="title">Titre du projet</label>
             <input type="text" name="title" maxlength="100" value="<?php echo $title ?>" required>
             <label for="description">Description du projet</label>
@@ -107,7 +107,7 @@ function fieldsVerify($title, $description, $userId, $urlGit) {
 
             <input type="submit" value="Ajouter" class="button">
             <?php echo "<p style='color:red'>$message</p>" ?>
-       </form>
+    </form>
     </section>
 
 </body>

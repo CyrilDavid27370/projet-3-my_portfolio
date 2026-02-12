@@ -55,7 +55,7 @@ $date = $date->format('d-m-Y');
                 <div class="project-links">
                     <a href="<?php echo htmlspecialchars($project['url_git']) ?>" class="project-link secondary">GitHub</a>                   
                     <div class="delete"><a href="">❌</a></div>
-                    <div class="update"><a href="">✏️</a></div>
+                    <div class="update"><a href="update.php?id=<?php echo $project['id']?>">✏️</a></div>
                 </div>
                 <div class="infos">
                     <div><?php echo $date ?></div>
