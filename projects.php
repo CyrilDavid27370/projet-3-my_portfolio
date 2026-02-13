@@ -1,5 +1,12 @@
 <?php
-$message = isset($_GET['message']) ? 'Le projet a été ajouté avec succès' : NULL;
+session_start();
+if(isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+} else {
+    $user = NULL;
+}
+
+$message = isset($_GET['message']) ? 'Le projet a été ' . $_GET['message'] .' avec succès' : NULL;
 ?>
 
 
@@ -15,22 +22,14 @@ $message = isset($_GET['message']) ? 'Le projet a été ajouté avec succès' : 
 </head>
 
 <body>
-    <header>
-        <img src="../image/photo-profil.jpg" alt="photo de profil" class="photo-profil">
-        <div class="name">Camile Ghastine</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="/index.php">Accueil</a></li>
-                <li><a href="projects.php">Projets</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    
+    <?php require('shared/_header.php'); ?>
+
     <section class="projects-section">
         <?php echo "<div style='color:green'>$message</div>" ?>
         <h1 class="section-title">Mes Projets</h2>
+        <?php if ($user) { ?>
         <p class="p-add"><a href="add.php" class="add">➕</a></p>
+        <?php } ?>
         <div class="projects-list">
             <?php 
             // Récuper tous les projets avec PDO dans la variable $projects

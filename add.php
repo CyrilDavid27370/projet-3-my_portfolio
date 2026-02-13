@@ -1,4 +1,15 @@
 <?php
+session_start();
+if(isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+} else {
+    $user = NULL;
+}
+
+if (!$user) {
+    header('Location:/src/auth/connection.php');
+    exit;
+}
 
 $pdo = new PDO('mysql:dbname=my_portfolio;host=mysql;charset=UTF8', 'user', 'pwd');
 $sql = "SELECT * FROM users";
@@ -9,6 +20,7 @@ $users = $request->fetchall(PDO::FETCH_ASSOC);
 $message = NULL;
 $description = '';
 $title = '';
+$urlGit = '';
 
 //Si le formaulaire a été soumi
 if(!empty($_POST)) {
@@ -19,6 +31,7 @@ if(!empty($_POST)) {
     $userId = (int)$_POST['user_id'];
 
     // On vérifie si les chmaps comportenet des erreurs
+    require('service/function.php');
     $message = fieldsVerify($title, $description, $userId, $urlGit);
 
     // Si pas d'erreur sur les chamsp on enregistre dans la BDD
@@ -32,32 +45,8 @@ if(!empty($_POST)) {
             'urlGit' => $urlGit,
             'userId' => $userId
         ]);
-        header('Location:projects.php?message=succes');
+        header('Location:projects.php?message=ajouté');
         exit;
-    }
-}
-
-function fieldsVerify($title, $description, $userId, $urlGit) {
-    // Vérifier que les chmaps ne sont pas vides
-    if(empty($title) || empty($description) || empty($userId)) {
-        return 'Tous les champs doivent être renseignés.';
-    }
-
-
-    //  Vérifier que le titre à moins de 100 caractères
-    if(strlen($title) > 100) {
-        return 'Le titre ne doit pas dépasser 100 caractères.';
-    }
-
-    // Vérifier que la description à moins de 1000 caractère
-    if(strlen($description) > 1000) {
-        return 'La description ne doit pas dépasser 1000 caractères.';
-    }
-
-    // Vérifier si l'url siasi est bien une url valide
-    $regex = "/^(https?:\/\/)[\w\-]+(\.[\w\-]+)+([\/\w\-\.\?\=\#\&\%]*)?$/";
-    if ($urlGit && !preg_match($regex, $urlGit)) {
-        return "L'url saisie n'est pas valide";
     }
 }
 ?>
@@ -70,22 +59,10 @@ function fieldsVerify($title, $description, $userId, $urlGit) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/add-style.css">
     <title>Portfolio - Projets</title>
-
 </head>
 
 <body>
-    <header>
-        <img src="../image/photo-profil.jpg" alt="photo de profil" class="photo-profil">
-        <div class="name">Camile Ghastine</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="/index.php">Accueil</a></li>
-                <li><a href="projects.php">Projets</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
+    <?php require('shared/_header.php'); ?>
     
     <section class="form-section">
         <h2>Ajouter un projet</h2>
@@ -96,7 +73,7 @@ function fieldsVerify($title, $description, $userId, $urlGit) {
             <label for="description">Description du projet</label>
             <textarea name="description" rows="10" maxlength="1000" required><?php echo $description ?></textarea>
             <label for="url_git">URL github</label>
-            <input type="text" name="url_git">
+            <input type="text" name="url_git" value="<?php echo htmlspecialchars($urlGit) ?>">
             <label for="user_id">Auteur du projet</label>
             <select name="user_id" id="pet-select" required>
                 <option value="">--Veuillez choisir une auteur--</option>
